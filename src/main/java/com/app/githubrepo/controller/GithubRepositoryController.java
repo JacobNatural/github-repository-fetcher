@@ -1,7 +1,7 @@
 package com.app.githubrepo.controller;
 
 import com.app.githubrepo.dto.ResponseRepositoryDto;
-import com.app.githubrepo.service.GithubService;
+import com.app.githubrepo.service.impl.GithubServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GithubRepositoryController {
 
-    private final GithubService githubService;
+    private final GithubServiceImpl githubServiceImpl;
 
     @GetMapping("/{username}/repo")
     public ResponseEntity<List<ResponseRepositoryDto>> repo(@PathVariable String username) {
         return ResponseEntity
                 .ok()
-                .body(githubService.fetchNonForkedRepositoriesWithBranches(username));
+                .body(githubServiceImpl.fetchNonForkedRepositoriesWithBranches(username));
     }
 }
