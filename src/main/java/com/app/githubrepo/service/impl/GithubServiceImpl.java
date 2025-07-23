@@ -1,6 +1,6 @@
 package com.app.githubrepo.service.impl;
 
-import com.app.githubrepo.client.impl.GithubClientImpl;
+import com.app.githubrepo.client.GithubClient;
 import com.app.githubrepo.dto.RepositoryDto;
 import com.app.githubrepo.dto.ResponseBranchDto;
 import com.app.githubrepo.dto.ResponseRepositoryDto;
@@ -12,10 +12,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GithubServiceImpl implements GithubService {
-    private final GithubClientImpl githubClientImpl;
+    private final GithubClient githubClient;
 
     public List<ResponseRepositoryDto> fetchNonForkedRepositoriesWithBranches(String username) {
-        return githubClientImpl
+        return githubClient
                 .fetchUserRepos(username)
                 .stream()
                 .filter(repo -> !repo.fork())
@@ -24,7 +24,7 @@ public class GithubServiceImpl implements GithubService {
     }
 
     private ResponseRepositoryDto toResponseDtoWithBranches(RepositoryDto repositoryDto) {
-        var branches = githubClientImpl
+        var branches = githubClient
                 .fetchBranches(repositoryDto.owner().login(), repositoryDto.name())
                 .stream()
                 .map(branch -> new ResponseBranchDto(branch.name(), branch.commit().sha()))
